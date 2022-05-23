@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name="form1" onsubmit="sendData();return false" enctype="multipart/form-data">
+        <input type="text" name="nickname" placeholder="暱稱">
+        <br/>
+        <input type="text" name="account" placeholder="帳號"/>
+        <br/>
+        <input type="password" name="password" placeholder="密碼"/>
+        <br/>
+        <input type="submit"/>
+    </form>
+    <script>
+        async function sendData(){
+            // FormData類型是沒有外觀的表單，單純只有資料
+            // 也可以建立一個沒有資料的FormData，可用append的方式依序放入值
+            const fd = new FormData(document.form1);
+
+            // 每一項欄位名稱＆欄位值
+            // for(let s of fd){
+            //     console.log(s);
+            // }
+
+            // 把表單的資料轉換為URL
+            // const usp = new URLSearchParams(fd);
+            // console.log(usp.toString());            
+
+            const r = await fetch("0519-14-post-echo.php",{
+                method:"POST",
+                body:fd,
+            });
+            const result = await r.json();
+            console.log(result);
+        }
+
+
+    </script>
+</body>
+</html>

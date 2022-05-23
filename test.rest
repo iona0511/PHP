@@ -1,0 +1,14 @@
+
+檔頭
+
+
+### get 沒有body , 所以不用寫Content-Type
+
+GET http://localhost/IOIOIOIONA_php/0518-11-continue.php
+
+### post 寫body 時，記得先空一行！不然會被視為header
+
+POST  http://localhost/IOIOIOIONA_php/0518-09-form-post.php
+Content-Type: application/x-www-form-urlencoded
+
+account=QQQQ&password=111111
