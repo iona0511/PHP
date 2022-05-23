@@ -1,6 +1,6 @@
 <?php
 
-// 判斷有無啟動
+// 判斷session有無啟動
 if(!isset($_SESSION)){
     session_start();
 }

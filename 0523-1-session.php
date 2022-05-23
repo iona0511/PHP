@@ -4,12 +4,11 @@ session_start();
 // 要放在HTML內容出現之前
 // 為了設定cookie
 
-if(!isset($_SESSION['a'])){
 
+// 判斷session有無設定
+if(!isset($_SESSION['a'])){
     $_SESSION['a']= 0;
 }
-// 判斷有無設定
-
 $_SESSION['a']++;
 echo $_SESSION['a'];
 
