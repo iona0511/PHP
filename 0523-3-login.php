@@ -15,7 +15,7 @@ $output= [
     'postData'=>$_POST,
 ];
 
-
+// isset只判斷有無設定，不管是否有值
 // 先判斷欄位
 if(isset($_POST['account'])){
     
@@ -23,8 +23,7 @@ if(isset($_POST['account'])){
     // exit;
     // 會立刻停止php程式執行，後面就不會再執行
 
-
-    // 在判斷是否都有值
+    // 判斷帳號密碼是否都有值，有的話才進行下一步
     if(!empty($_POST['account']) and !empty($_POST['password'])){
         if(!empty($users[$_POST['account']])){
             if($_POST['password']===$users[$_POST['account']]['password']){
