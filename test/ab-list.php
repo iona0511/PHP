@@ -110,10 +110,16 @@ if ($totalRows > 0) {
 
 </div>
 <script>
-    const trash = document.querySelector('.a');
-    trash.addEventListener('click',()=>{
-        trash.style.display = 'none';
+
+const trash = document.querySelectorAll('.a');
+for(let i = 0; i<trash.length;i++){
+    trash[i].addEventListener('click',()=>{
+    trash[i].style.display = 'none';
+        
     });
+}
+
+
 </script>
 
 

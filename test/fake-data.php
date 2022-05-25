@@ -12,6 +12,7 @@ $stmt = $pdo->query($sql);
 */
 
 // 避免 SQL injection (SQL 隱碼攻擊)
+// 問號必須對應欄位！
 $sql = "INSERT INTO `test`(
     `name`, `birthday`, `mobile`, 
     `address`, `mail`, `created_at`
@@ -20,7 +21,7 @@ $sql = "INSERT INTO `test`(
         ?, ?, NOW()
     )";
 
-// 資料如果是從外面來的話，一律用prepare搭配execute， 不要直接用sql執行
+// 資料如果是從外面來（用戶端）的話，一律用prepare搭配execute， 不要直接用sql執行
 $stmt = $pdo->prepare($sql);
 // prepare &execute讓字元跳脫
 
@@ -33,5 +34,5 @@ $stmt->execute([
     'ming@test.com',
 ]);
 
-// 會拿到新增的筆數
+// 會拿到新增、更新、刪除的筆數
 echo $stmt->rowCount();
