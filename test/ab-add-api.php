@@ -27,6 +27,7 @@ $mobile = $_POST['mobile'] ?? '';
 $birthday = empty($_POST['birthday']) ? NULL : $_POST['birthday'];
 $address = $_POST['address'] ?? '';
 
+// FILTER_VALIDATE_EMAIL是用來檢查mail格式是否正確
 if (!empty($mail) and filter_var($mail, FILTER_VALIDATE_EMAIL) === false) {
     $output['error'] = 'mail 格式錯誤';
     $output['code'] = 405;
