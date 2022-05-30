@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 
 $folder = __DIR__. '/uploaded/';
 
+// 只能移動上傳的檔案 
 move_uploaded_file($_FILES['myfile']['tmp_name'], $folder . $_FILES['myfile']['name']);
 
 echo json_encode($_FILES);
@@ -21,4 +22,4 @@ echo json_encode($_FILES);
 //         "error": 0,
 //         "size": 559798
 //     }
-// }
+// } 
