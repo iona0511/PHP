@@ -1,18 +1,15 @@
 <?php
 require __DIR__ . '/parts/connect_db.php';
-header("Content-Type:application/json");
-// 這個header是postman新增資料時加的
-// 把要傳給前端的東西，用陣列包起來
+header('Content-Type: application/json');
+
 $output = [
     'success' => false,
     'postData' => $_POST,
-    'code'=> 0,
+    'code' => 0,
     'error' => ''
 ];
-// TODO: 欄位檢查，這裡是做後端的檢查
-// PK key不用給
-// TODO: 欄位檢查, 後端的檢查
 
+// TODO: 欄位檢查, 後端的檢查
 if (empty($_POST['name'])) {
     $output['error'] = '沒有姓名資料';
     $output['code'] = 400;
@@ -20,20 +17,20 @@ if (empty($_POST['name'])) {
     exit;
 }
 
-
 $name = $_POST['name'];
-$mail = $_POST['mail'] ?? '';
-$mobile = $_POST['mobile'] ?? '';
 $birthday = empty($_POST['birthday']) ? NULL : $_POST['birthday'];
+$mobile = $_POST['mobile'] ?? '';
 $address = $_POST['address'] ?? '';
+$mail = $_POST['mail'] ?? '';
 
-// FILTER_VALIDATE_EMAIL是用來檢查mail格式是否正確
 if (!empty($mail) and filter_var($mail, FILTER_VALIDATE_EMAIL) === false) {
     $output['error'] = 'mail 格式錯誤';
     $output['code'] = 405;
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
     exit;
 }
+// TODO: 其他欄位檢查
+
 
 $sql = "INSERT INTO `test`(
     `name`, `birthday`, `mobile`, 
@@ -46,11 +43,11 @@ $sql = "INSERT INTO `test`(
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute([
-    $_POST['name'],
-    empty($_POST['birthday']) ? NULL : $_POST['birthday'],
-    $_POST['mobile'],
-    $_POST['address'],
-    $_POST['mail'],
+    $name,
+    $birthday,
+    $mobile,
+    $address,
+    $mail,
 ]);
 
 
@@ -64,7 +61,4 @@ if ($stmt->rowCount() == 1) {
 // isset() vs empty()
 
 
-// 透過ajax和前端溝通
 echo json_encode($output, JSON_UNESCAPED_UNICODE);
-
-

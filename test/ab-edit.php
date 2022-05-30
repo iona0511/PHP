@@ -1,6 +1,20 @@
 <?php require __DIR__ . '/parts/connect_db.php';
-$pageName = 'ab-add';
-$title = '新增通訊錄資料 - 小新的網站';
+$pageName = 'ab-edit';
+$title = '編輯通訊錄資料 - 小新的網站';
+
+$sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
+if (empty($sid)) {
+    header('Location: ab-list.php');
+    exit;
+}
+
+$row = $pdo->query("SELECT * FROM test WHERE sid=$sid")->fetch();
+if (empty($row)) {
+    header('Location: ab-list.php');
+    exit;
+}
+
+
 
 ?>
 <?php include __DIR__ . '/parts/html-head.php' ?>
@@ -19,38 +33,38 @@ $title = '新增通訊錄資料 - 小新的網站';
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">新增資料</h5>
+                    <h5 class="card-title">編輯資料</h5>
                     <form name="form1" onsubmit="sendData();return false;" novalidate>
                         <div class="mb-3">
                             <label for="name" class="form-label">* name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" required value="<?= htmlentities($row['name']) ?>">
+                            <div class="form-text red"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<?= $row['email'] ?>">
+                            <div class="form-text red"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">mobile</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" pattern="09\d{8}" value="<?= $row['mobile'] ?>">
                             <div class="form-text red"></div>
                         </div>
                         <div class="mb-3">
                             <label for="birthday" class="form-label">birthday</label>
-                            <input type="date" class="form-control" id="birthday" name="birthday">
+                            <input type="date" class="form-control" id="birthday" name="birthday" value="<?= $row['birthday'] ?>">
                             <div class="form-text"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="mobile" class="form-label">mobile</label>
-                            <input type="text" class="form-control" id="mobile" name="mobile" pattern="09\d{8}">
-                            <div class="form-text red"></div>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">address</label>
-                            <textarea class="form-control" name="address" id="address" cols="30" rows="3"></textarea>
+                            <textarea class="form-control" name="address" id="address" cols="30" rows="3"><?= $row['address'] ?></textarea>
                             <div class="form-text"></div>
                         </div>
-                        <div class="mb-3">
-                            <label for="mail" class="form-label">mail</label>
-                            <input type="mail" class="form-control" id="mail" name="mail">
-                            <div class="form-text red"></div>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary">新增</button>
+                        <button type="submit" class="btn btn-primary">修改</button>
                     </form>
                     <div id="info-bar" class="alert alert-success" role="alert" style="display:none;">
-                        資料新增成功
+                        資料編輯成功
                     </div>
                 </div>
             </div>
@@ -60,17 +74,18 @@ $title = '新增通訊錄資料 - 小新的網站';
 </div>
 <?php include __DIR__ . '/parts/scripts.php' ?>
 <script>
+    const row = <?= json_encode($row, JSON_UNESCAPED_UNICODE); ?>;
+
+
     const email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/;
     const mobile_re = /^09\d{2}-?\d{3}-?\d{3}$/;
 
     const info_bar = document.querySelector('#info-bar');
     const name_f = document.form1.name;
-    const birthday_f = document.form1.birthday;
-    const mobile_f = document.form1.mobile;
-    const address_f = document.form1.address;
     const mail_f = document.form1.mail;
+    const mobile_f = document.form1.mobile;
 
-    const fields = [name_f, birthday_f, mobile_f,address_f, mail_f];
+    const fields = [name_f, mail_f, mobile_f];
     const fieldTexts = [];
     for (let f of fields) {
         fieldTexts.push(f.nextElementSibling);
@@ -98,10 +113,10 @@ $title = '新增通訊錄資料 - 小新的網站';
             fieldTexts[0].innerText = '姓名至少兩個字';
             isPass = false;
         }
-        if (birthday_f.value.length <2) {
-            // alert('生日未填寫');
+        if (mail_f.value && !mail_re.test(mail_f.value)) {
+            // alert('mail 格式錯誤');
             fields[1].classList.add('red');
-            fieldTexts[1].innerText = '生日未填寫';
+            fieldTexts[1].innerText = 'mail 格式錯誤';
             isPass = false;
         }
         if (mobile_f.value && !mobile_re.test(mobile_f.value)) {
@@ -110,18 +125,7 @@ $title = '新增通訊錄資料 - 小新的網站';
             fieldTexts[2].innerText = '手機號碼格式錯誤';
             isPass = false;
         }
-        if (address_f.value && !address_re.test(address_f.value)) {
-            // alert('地址格式錯誤');
-            fields[3].classList.add('red');
-            fieldTexts[3].innerText = '地址格式錯誤';
-            isPass = false;
-        }
-        if (mail_f.value && !mail_re.test(mail_f.value)) {
-            // alert('email 格式錯誤');
-            fields[4].classList.add('red');
-            fieldTexts[4].innerText = 'email 格式錯誤';
-            isPass = false;
-        }
+
         if (!isPass) {
             return; // 結束函式
         }

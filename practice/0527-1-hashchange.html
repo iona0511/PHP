@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 300px;
+            height: 800px;
+            position: relative;
+            background-color: rgb(159, 242, 255);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <a href="#aa">aa</a>
+        <a href="#bb">bb</a>
+        <a href="#cc">cc</a>
+    </div>
+    <div class="box" id="aa"></div>
+    <div class="box" id="bb" style="background-color:#afa"></div>
+    <div class="box" id="cc" style="background-color:#faf"></div>
+    <div>
+        <a href="#aa">aa</a>
+        <a href="#bb">bb</a>
+        <a href="#cc">cc</a>
+    </div>
+</body>
+<script>
+    window.addEventListener('hashchange',function(){
+        console.log(location.hash);
+        // 只能放在query string後面，只能放一個
+    });
+</script>
+</html>

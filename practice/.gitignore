@@ -1,0 +1,7 @@
+# .gitignore
+# test.html
+# /node_modules
+# .DS_Store
+# .vscode
+# .side_project
+# test

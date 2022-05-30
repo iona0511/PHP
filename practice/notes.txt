@@ -1,0 +1,26 @@
+2022/05/30
+
+POST
+form data 才可以上傳檔案
+file 
+
+name 原本的檔名
+temp_name暫存檔 PHP跑完就結束
+
+
+move_uploaded_file (,$folder)
+目前PHP所在位置
+
+
+決定檔案存放路徑
+用陣列來做篩選
+key用mytype
+md5 32
+拿到的檔名輸出
+搬到指定位置
+
+
+$password
+password_hash（$password密碼,PASSWORD_BCRYPT演算法編碼）是做密碼的編碼
+
+http_build_query可以把

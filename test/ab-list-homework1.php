@@ -11,7 +11,7 @@ if ($page < 1) {
     exit;
 }
 
-$t_sql = "SELECT COUNT(1) FROM address_book";
+$t_sql = "SELECT COUNT(1) FROM test";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 總筆數
 
 $totalPages = ceil($totalRows / $perPage); // 總共有幾頁
@@ -80,7 +80,7 @@ if ($totalRows > 0) {
                 <th scope="col">#</th>
                 <th scope="col">姓名</th>
                 <th scope="col">手機</th>
-                <th scope="col">電郵</th>
+                <th scope="col">信箱</th>
                 <th scope="col">生日</th>
                 <th scope="col">地址</th>
                 <th scope="col"><i class="fa-solid fa-pen-to-square"></i></th>
@@ -88,29 +88,19 @@ if ($totalRows > 0) {
         </thead>
         <tbody>
             <?php foreach ($rows as $r) : ?>
-                <tr>
+                <tr class="a">
                     <td>
-                        <?php /*
-                        <a href="ab-delete.php?sid=<?= $r['sid'] ?>" onclick="return confirm('確定要刪除編號為 <?= $r['sid'] ?> 的資料嗎?')">
-                        */ ?>
-
-                        <a href="javascript: delete_it(<?= $r['sid'] ?>)">
+                    <a href="javascript:" onclick="trashCanClicked(event); return false;">
                             <i class="fa-solid fa-trash-can"></i>
-                        </a>
-                    </td>
+                        </a>                    </td>
                     <td><?= $r['sid'] ?></td>
-                    <td><?= htmlentities($r['name']) ?></td>
+                    <td><?= $r['name'] ?></td>
                     <td><?= $r['mobile'] ?></td>
-                    <td><?= $r['email'] ?></td>
+                    <td><?= $r['mail'] ?></td>
                     <td><?= $r['birthday'] ?></td>
-                    <!--
-                    <td><?= htmlentities($r['address']) ?></td>
-            -->
-                    <td><?= strip_tags($r['address']) ?></td>
+                    <td><?= $r['address'] ?></td>
                     <td>
-                        <a href="ab-edit.php?sid=<?= $r['sid'] ?>">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
+                        <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -120,15 +110,34 @@ if ($totalRows > 0) {
 
 
 </div>
+<script>
 
+// // const trash = document.querySelectorAll('.a');
+// // for(let i = 0; i<trash.length;i++){
+// //     trash[i].addEventListener('click',()=>{
+// //     trash[i].style.display = 'none';
+        
+// //     });
+// // }
+// // closest'remove
+
+// 解法二
+function trashCanClicked(event) {
+        //console.log(event.currentTarget);
+        //console.log(event.target);
+        const a_tag = event.currentTarget;
+        const tr = a_tag.closest('tr');
+        console.log(tr);
+        tr.remove();
+    }
+
+
+</script>
 
 
 <?php include __DIR__ . '/parts/scripts.php' ?>
-<script>
-    function delete_it(sid) {
-        if (confirm(`確定要刪除編號為 ${sid} 的資料嗎?`)) {
-            location.href = `ab-delete.php?sid=${sid}`;
-        }
-    }
-</script>
 <?php include __DIR__ . '/parts/html-foot.php' ?>
+
+<!-- 
+body
+欄位名稱 -->
